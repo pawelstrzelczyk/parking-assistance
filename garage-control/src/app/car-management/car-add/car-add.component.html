@@ -1,0 +1,43 @@
+<div>
+  <button mat-icon-button class="small"
+  [mat-dialog-close]="true">
+  <mat-icon>
+    close
+  </mat-icon>
+  </button>
+</div>
+
+<div class="center">
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field appearance="fill">
+      <mat-label>License plate</mat-label>
+      <input matInput type="text" formControlName="licensePlate" placeholder="Enter a license plate">
+    </mat-form-field>
+
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>width</mat-label>
+      <input matInput type="number" formControlName="width" placeholder="Enter width">
+    </mat-form-field>
+
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>length</mat-label>
+      <input matInput type="number" formControlName="length" placeholder="Enter length">
+    </mat-form-field>
+
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>has access?</mat-label>
+      <input matInput type="number" formControlName="hasAccess" placeholder="Is access allowed">
+    </mat-form-field>
+
+    <br>
+
+    <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">Save car</button>
+
+  </form>
+</div>

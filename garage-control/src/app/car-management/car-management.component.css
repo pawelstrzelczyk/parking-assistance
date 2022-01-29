@@ -1,0 +1,13 @@
+.center {
+  justify-content: center;
+}
+
+table {
+  margin-left: 10%;
+  width: 80%;
+}
+
+#button_add {
+  margin-left: 45%;
+  width: 10%;
+}
