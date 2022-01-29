@@ -3,7 +3,7 @@ import board
 import neopixel
 import time
 
-car_width = 0
+CAR_WIDTH = 0
 
 GPIO.setmode(GPIO.BCM)
 
@@ -30,7 +30,7 @@ def setup_diodes():
     GPIO.setup(GPIO_ECHO_SIDE, GPIO.IN)
 
 
-def distance(trigger, echo):
+def measure_distance(trigger, echo):
     # set Trigger to HIGH
     GPIO.output(trigger, True)
 
@@ -116,19 +116,18 @@ def left_side_colors(dist, pixels, car_width):
             turnOn(i - 3, pixels)
 
 
-def run_diodes():
+def light_diode_strips():
     start = time.time()
     counter = 0
-    last_measurement = distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
+    last_measurement = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
     while True:
-        front_distance = distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
+        front_distance = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
         front_colors(front_distance, pixels_front)
-        side_colors(distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
-        left_side_colors(distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, car_width)
+        side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
+        left_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, CAR_WIDTH)
         time.sleep(0.1)
         counter += 1
 
-        #print('dist front: ', front_distance, ' last dist: ', last_measurement, ' counter: ', counter)
         if abs(last_measurement - front_distance) > 5 or 5 <= front_distance:
             counter = 0
             last_measurement = front_distance
@@ -145,9 +144,9 @@ if __name__ == '__main__':
         setup_diodes()
 
         while True:
-            front_colors(distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT), pixels_front)
-            side_colors(distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
-            left_side_colors(distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, car_width)
+            front_colors(measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT), pixels_front)
+            side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
+            left_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, CAR_WIDTH)
             time.sleep(0.06)
     except KeyboardInterrupt:
         turnOffAll(pixels_front)

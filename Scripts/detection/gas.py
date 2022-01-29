@@ -7,11 +7,10 @@ GPIO_TRIGGER = 20
 GPIO.setup(GPIO_TRIGGER, GPIO.IN)
 
 
-
 def gasCheck():
-    input = GPIO.input(GPIO_TRIGGER)
-    if input:
-        db = sqlite3.connect('garage.db', timeout=20)
+    gas_input = GPIO.input(GPIO_TRIGGER)
+    if gas_input:
+        db = sqlite3.connect('../main_controllers/garage.db', timeout=20)
         db.cursor().execute("INSERT INTO GAS_ALERTS DEFAULT VALUES")
         db.commit()
         db.close()
