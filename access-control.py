@@ -10,7 +10,7 @@ from gpiozero import Servo
 servo = Servo(25)
 servo.detach()
 
-car_width = 0
+#car_width = 0
 
 
 def startup():
@@ -116,21 +116,22 @@ def car_exit(car_length):
 
 
 def wait_and_check_access():
-    while True:
+    while True:  # Pętla główna programu, obsługująca zdarzenia dotyczące pojazdów
         time.sleep(2)
-        license_plate = find_license_plate()
+        license_plate = find_license_plate()  # Wywołanie wynkcji wykrywającej i odczytującej tablicę rejestracyjną
         print(license_plate)
-        if len(license_plate) == 7 or len(license_plate) == 8:
+        if len(license_plate) == 7 or len(license_plate) == 8:  # Sprawdzenie poprawności długości odczytanego ciągu znaków
             db = sqlite3.connect('garage.db', timeout=5)
-            approved, car_width, car_length = is_approved(license_plate)
+            approved, car_width, car_length = is_approved(license_plate)  # Sprawdzenie praw dostępu
+            # wjazdu do garażu w bazie danych i odczytanie parametrów pojazdu
 
             diode2.car_width = car_width
 
-            log_access(license_plate, approved)
-            if approved == 1:
-                open_gate()
-                run_distance_helper()
-                close_gate()
+            log_access(license_plate, approved)  # Zapisanie do bazy danych aktywności dostępu
+            if approved == 1:  # Obsługa pojazdu po pomyślnej weryfikacji
+                open_gate()  # Otwarcie bramy
+                run_distance_helper()  # Uruchomienie wspomagania parkowania (czujniki + diody LED)
+                close_gate()  # Zamknięcie bramy
                 wait_for_exit()
                 open_gate()
                 car_exit(car_length)
