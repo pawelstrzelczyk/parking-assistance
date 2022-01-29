@@ -45,7 +45,6 @@ def capture():
         options = "-c tessedit_char_whitelist={}".format(alphanumeric)
         options += " --psm {}".format(7)
 
-        print('image processed')
         # run tesseract OCR on image
         text = pytesseract.image_to_string(new_image, config=options)
         text = text.strip()

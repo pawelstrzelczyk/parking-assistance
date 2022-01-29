@@ -31,28 +31,21 @@ def setup_diodes():
 
 
 def measure_distance(trigger, echo):
-    # set Trigger to HIGH
     GPIO.output(trigger, True)
 
-    # set Trigger after 0.01ms to LOW
     time.sleep(0.00001)
     GPIO.output(trigger, False)
 
     start_time = time.time()
     stop_time = time.time()
 
-    # save start_time
     while GPIO.input(echo) == 0:
         start_time = time.time()
 
-    # save time of arrival
     while GPIO.input(echo) == 1:
         stop_time = time.time()
 
-    # time difference between start and arrival
     time_elapsed = stop_time - start_time
-    # multiply with the sonic speed (34300 cm/s)
-    # and divide by 2, because there and back
 
     return (time_elapsed * 34300) / 2
 
@@ -104,7 +97,6 @@ def side_colors(dist, pixels):
 
 
 def left_side_colors(dist, pixels, car_width):
-
     left_dist = 25 - car_width - dist
     turnOffAll(pixels)
     if left_dist > 10 or left_dist < -5:

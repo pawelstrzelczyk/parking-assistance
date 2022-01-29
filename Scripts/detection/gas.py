@@ -10,7 +10,7 @@ GPIO.setup(GPIO_TRIGGER, GPIO.IN)
 def gasCheck():
     gas_input = GPIO.input(GPIO_TRIGGER)
     if gas_input:
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=20)
+        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
         db.cursor().execute("INSERT INTO GAS_ALERTS DEFAULT VALUES")
         db.commit()
         db.close()
@@ -21,6 +21,6 @@ if __name__ == '__main__':
     try:
         while True:
             gasCheck()
-            time.sleep(0.5)
+            time.sleep(2)
     except KeyboardInterrupt:
         print("Measurement stopped by User")

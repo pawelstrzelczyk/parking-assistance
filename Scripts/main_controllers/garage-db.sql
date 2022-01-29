@@ -36,4 +36,3 @@ CREATE TABLE access_log(
         REFERENCES car_parameters(license_plate_number) ON DELETE CASCADE
 );
 
-INSERT INTO access values('ERA87TL', 1)

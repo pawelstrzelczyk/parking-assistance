@@ -10,9 +10,6 @@ servo = Servo(25)
 servo.detach()
 
 
-# car_width = 0
-
-
 def startup():
     distance_helper.setup_diodes()
     init_db_script = open('garage-db.sql')
@@ -101,7 +98,7 @@ def wait_car_exit(car_length):
     while True:
         dist = distance_helper.measure_distance(distance_helper.GPIO_TRIGGER_FRONT, distance_helper.GPIO_ECHO_FRONT)
         time.sleep(1)
-        print('in exit', car_length)
+
         if dist > 2 * car_length:
             counter += 1
         else:
@@ -115,7 +112,7 @@ def wait_and_check_access():
     while True:  # Pętla główna programu, obsługująca zdarzenia dotyczące pojazdów
         time.sleep(2)
         license_plate = find_license_plate()  # Wywołanie wynkcji wykrywającej i odczytującej tablicę rejestracyjną
-        print(license_plate)
+
         if 7 <= len(license_plate) <= 8:  # Sprawdzenie poprawności długości odczytanego ciągu znaków
             db = sqlite3.connect('garage.db', timeout=5)
             approved, car_width, car_length = is_approved(license_plate)  # Sprawdzenie praw dostępu
@@ -135,8 +132,6 @@ def wait_and_check_access():
 
             db.commit()
             db.close()
-        else:
-            print("License plate not found\n")
 
 
 def run_app():
