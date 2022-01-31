@@ -85,7 +85,7 @@ def front_colors(dist, pixels):
         allYellow(pixels)
 
 
-def right_side_colors(dist, pixels):
+def side_colors(dist, pixels):
     turnOffAll(pixels)
     if dist < 3 or dist > 30:
         allRed(pixels)
@@ -111,30 +111,23 @@ def left_side_colors(dist, pixels, car_width):
 def light_diode_strips():
     start = time.time()
     counter = 0
-    last_measurement = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)  # Pomiar odległości od końca garażu
-    while True:  # Pętla kontrolująca i wspomagająca parkowanie
-        front_distance = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)  # Pomiar odległości od końca garażu
-        front_colors(front_distance, pixels_front)  # Zapalenie przednich LEDów wspomagających parkowanie
-        # w zależności od zmierzonej odległości
-        right_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)  # Pomiar odległości
-        # i zapalenie LEDów z prawej strony
-        left_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, CAR_WIDTH)  # Pomiar
-        # odległości i zapalenie LEDów z lewej strony w zależności od odległości i szerokości pojazdu
-        # (pomiar odległości bocznej jest wykonywany tylko z prawej strony)
+    last_measurement = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
+    while True:
+        front_distance = measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT)
+        front_colors(front_distance, pixels_front)
+        side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
+        left_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, CAR_WIDTH)
         time.sleep(0.1)
-        counter += 1  # zwiększenie licznika
+        counter += 1
 
-        if abs(last_measurement - front_distance) > 5 or front_distance >= 5:  # jeśli pozycja samochodu nie zmieniła
-            # się znacznie od poprzedniego pomiaru lub samochód podjechał za blisko licznik jest zerowany i kontrola
-            # parkowania trwa dalej
+        if abs(last_measurement - front_distance) > 5 or 5 <= front_distance:
             counter = 0
             last_measurement = front_distance
-        if counter > 100 and time.time() - start > 30:  # jeśli licznik osiągnął określoną wartość i minął minimalny
-            # czas samochód jest uznawany za zaparkowany i kończy się działanie wspomagania parkowania
+        if counter > 100 and time.time() - start > 30:
             break
 
     turnOffAll(pixels_front)
-    turnOffAll(pixels_right)  # wyłączenie pasków LED
+    turnOffAll(pixels_right)
     turnOffAll(pixels_left)
 
 
@@ -144,7 +137,7 @@ if __name__ == '__main__':
 
         while True:
             front_colors(measure_distance(GPIO_TRIGGER_FRONT, GPIO_ECHO_FRONT), pixels_front)
-            right_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
+            side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_right)
             left_side_colors(measure_distance(GPIO_TRIGGER_SIDE, GPIO_ECHO_SIDE), pixels_left, CAR_WIDTH)
             time.sleep(0.06)
     except KeyboardInterrupt:

@@ -31,6 +31,8 @@ CREATE TABLE gas_alerts(
 CREATE TABLE access_log(
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     approved Integer,
-    license_plate_number VARCHAR(9) NOT NULL
+    license_plate_number VARCHAR(9) NOT NULL,
+    CONSTRAINT access_log_FK FOREIGN KEY(license_plate_number)
+        REFERENCES car_parameters(license_plate_number) ON DELETE CASCADE
 );
 

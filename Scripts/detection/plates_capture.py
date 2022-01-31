@@ -50,7 +50,6 @@ def capture():
         text = text.strip()
 
         # cv.imshow('frame', frame)
-        # print('text:', text, 'len:', len(text))
         time.sleep(0.3)
         if len(text) == 7:
             cap.release()

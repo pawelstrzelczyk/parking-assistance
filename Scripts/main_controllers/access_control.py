@@ -2,8 +2,9 @@ import sqlite3
 import time
 import subprocess
 from sqlite3 import OperationalError
+import os
 
-from Scripts.detection import distance_helper, plates_capture
+from detection import distance_helper, plates_capture
 from gpiozero import Servo
 
 servo = Servo(25)
@@ -12,7 +13,8 @@ servo.detach()
 
 def startup():
     distance_helper.setup_diodes()
-    init_db_script = open('garage-db.sql')
+
+    init_db_script = open('main_controllers/garage-db.sql')
     created_tables = init_db_script.read().split(";")
     db = sqlite3.connect('garage.db', timeout=25)
     for table in created_tables:
@@ -71,11 +73,11 @@ def run_distance_helper():
 
 
 def start_gas_measurement():
-    subprocess.Popen(["sudo", "python", "gas.py"])
+    subprocess.Popen(["sudo", "python", "detection/gas.py"])
 
 
 def start_api():
-    subprocess.Popen(["sudo", "python", "garage_control.py"])
+    subprocess.Popen(["sudo", "python", "API/garage_control.py"])
 
 
 def wait_for_exit():
@@ -111,7 +113,7 @@ def wait_car_exit(car_length):
 def wait_and_check_access():
     while True:  # Pętla główna programu, obsługująca zdarzenia dotyczące pojazdów
         time.sleep(2)
-        license_plate = find_license_plate()  # Wywołanie wynkcji wykrywającej i odczytującej tablicę rejestracyjną
+        license_plate = find_license_plate()  # Wywołanie funkcji wykrywającej i odczytującej tablicę rejestracyjną
 
         if 7 <= len(license_plate) <= 8:  # Sprawdzenie poprawności długości odczytanego ciągu znaków
             db = sqlite3.connect('garage.db', timeout=5)
@@ -136,6 +138,7 @@ def wait_and_check_access():
 
 def run_app():
     try:
+
         startup()  # Inicjalizacja bazy danych i połączeń pinów do RaspberryPi
         start_gas_measurement()  # Uruchomienie procesu, który w tle prowadzi pomiary poziomu gazu w powietrzu
         start_api()  # Uruchomienie procesu wystawiającego REST API

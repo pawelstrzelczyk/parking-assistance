@@ -31,7 +31,7 @@ def create_app(test_config=None):
     @flask_app.route('/grant-access/<string:plate>/<int:grant>', methods=['POST'])
     @cross_origin()
     def access(plate, grant):
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute("UPDATE access SET isAllowed=(?) WHERE license_plate_number=(?)",
@@ -53,7 +53,7 @@ def create_app(test_config=None):
         if length < 5 or width < 5:
             return {"error": "Error: too small vehicle size!"}
 
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute('INSERT INTO car_parameters(width, length, license_plate_number) VALUES(?, ?, ?)',
@@ -71,7 +71,7 @@ def create_app(test_config=None):
     def get_cars():
         cars = []
 
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute('SELECT * FROM car_parameters NATURAL JOIN access')
@@ -89,7 +89,7 @@ def create_app(test_config=None):
     def get_logs():
         logs = []
 
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute("SELECT * FROM access_log")
@@ -107,7 +107,7 @@ def create_app(test_config=None):
     def get_gas_logs():
         logs = []
 
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute('SELECT * FROM gas_alerts')
@@ -125,7 +125,7 @@ def create_app(test_config=None):
     def get_accesses():
         accesses = []
 
-        db = sqlite3.connect('../main_controllers/garage.db', timeout=25)
+        db = sqlite3.connect('garage.db', timeout=25)
         cur = db.cursor()
         try:
             cur.execute("SELECT * FROM access")
