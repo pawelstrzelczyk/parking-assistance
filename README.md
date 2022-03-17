@@ -3,5 +3,7 @@ Embedded parking assistance system created for "Embededd Systems" classes on Poz
 
 # Contributors:
 >> https://github.com/xfredeq
+
 >> https://github.com/Adam-Grzenda
+
 >> https://github.com/pawelstrzelczyk
