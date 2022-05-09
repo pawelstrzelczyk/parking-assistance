@@ -1,5 +1,5 @@
 # parking-assistance
-Embedded parking assistance system created for "Embededd Systems" classes on Poznań University od Technology
+Embedded parking assistance system created for "Embedded Systems" classes on Poznań University od Technology.
 
 # Contributors:
 >> https://github.com/xfredeq
