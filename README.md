@@ -1,7 +1,9 @@
 # parking-assistance
 Embedded parking assistance system created for "Embedded Systems" classes on Poznań University od Technology.
 
-## Demo with description in Polish.
+# Demo with description in Polish
+
+https://youtu.be/kPUD6UVCc40
 
 # Contributors:
 >> https://github.com/xfredeq
